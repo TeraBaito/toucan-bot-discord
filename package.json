@@ -1,0 +1,20 @@
+{
+  "name": "toucan",
+  "version": "1.1.0",
+  "description": "Toucan Bot for Discord",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon .",
+    "production": "NODE.ENV=production&&npm start",
+    "development": "NODE.ENV=development&&npm start"
+  },
+  "author": "TeraBytes#4566 (ID: 558264504736153600)",
+  "license": "ISC",
+  "dependencies": {
+    "ascii-table": "0.0.9",
+    "common-tags": "^1.8.0",
+    "discord.js": "^12.2.0",
+    "dotenv": "^8.2.0"
+  }
+}

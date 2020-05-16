@@ -1,5 +1,5 @@
 const Discord = require('discord.js');
-const botInfo = require('C:/Users/Grupo Ingeser/Desktop/Bots/Toucan/package.json');
+const botInfo = require('../../package.json');
 const fs = require('fs');
 
 module.exports = { 

@@ -6,7 +6,7 @@ module.exports = {
     helpName: 'Ban',
     category: 'Moderation',
     aliases: ['b'],
-    usage: ';ban [@user]',
+    usage: 'ban [@user]',
     description: 'Bans a member from the current guild',
 
     run: async(bot, message, args) => {
@@ -72,7 +72,7 @@ module.exports = {
         const promptEmbed = new Discord.MessageEmbed()
             .setColor('eb8334')
             .setFooter('This verification becomes invalid after 30 seconds')
-            .setDescription(`Do you want to kick ${toBan}?`);
+            .setDescription(`Do you want to ban ${toBan}?`);
 
         
 

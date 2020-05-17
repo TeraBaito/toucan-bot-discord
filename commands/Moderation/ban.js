@@ -78,7 +78,7 @@ module.exports = {
         message.channel.send(promptEmbed).then(async msg => {
             const emoji = await promptMessage(msg, message.author, 30, ['✅', '❌']);
             
-            if (emoji === '✔') {
+            if (emoji === '✅') {
                 msg.delete();
 
                 toBan.ban(args.slice(1).join(' '))

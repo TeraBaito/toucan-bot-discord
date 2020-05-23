@@ -24,9 +24,9 @@ let ver = process.env.NODE_ENV;
 
 // turn on bot
 bot.on('ready', () => {
-    if (ver === 'prod') {
+    if (ver === 'production') {
         bot.user.setActivity('out for commands', {type: 'WATCHING'});
-    } else if (ver === 'dev') {
+    } else if (ver === 'development') {
         bot.user.setActivity('my owner code terribly', {type: 'WATCHING'});
     }
     console.log(`${bot.user.username} online in ${bot.guilds.cache.size} servers`);

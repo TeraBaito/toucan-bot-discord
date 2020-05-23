@@ -12,24 +12,22 @@ module.exports = {
     run: async(bot, message, args) => {
         const logChannel = message.guild.channels.cache.find(c => c.name === 'toucan-logs') || message.channel;
 
-        // if(message.deletable) message.delete();
-
         // Checks of when using command
         
+        if(message.deletable) message.delete();
+
         // No args
         if (!args[0]) {
             return await message.reply('Please provide a user to kick').then(m => m.delete({timeout: 5000}));
         }
 
-        
-
         // No permissions to kick
-        if (!message.member.hasPermission('KICK_MEMBERS')) {
+        if (!message.member.hasPermission('KICK_MEMBERS', 'ADMINISTRATOR')) {
             return await message.reply('You don\'t have permissions to kick members, smh').then(m => m.delete({timeout: 5000}));
         }
 
         // No bot permissions to kick (it does by default)
-        if (!message.guild.me.hasPermission('KICK_MEMBERS')) {
+        if (!message.guild.me.hasPermission('KICK_MEMBERS', 'ADMINISTRATOR')) {
             return await message.reply('I don\'t have permissions to kick members, please enable them').then(m => m.delete({timeout: 5000}));
         }
 
@@ -56,8 +54,9 @@ module.exports = {
         const kEmbed = new Discord.MessageEmbed()
             .setColor('#eb8334')
             .setThumbnail(toKick.user.displayAvatarURL)
-            .setFooter(message.member.displayName, message.author.displayAvatarURL)
+            .setFooter(message.member.displayName)
             .setTimestamp()
+            .setDescription('**Kick Action**')
             .addField('Kicked member', `${toKick} (${toKick.id})`)
             .addField('Kicked by', `${message.author} (${message.author.id})`)
 
@@ -88,6 +87,8 @@ module.exports = {
                     });
                 
                 logChannel.send(kEmbed);
+                message.channel.send(`**${toKick}** has been kicked.`);
+
             } else if (emoji === '❌') {
                 msg.delete();
                 message.reply('Kick cancelled.');

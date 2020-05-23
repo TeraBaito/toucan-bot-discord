@@ -24,13 +24,13 @@ module.exports = {
         
 
         // No permissions to ban
-        if (!message.member.hasPermission('BAN_MEMBERS')) {
-            return message.reply('You don\'t have permissions to kick members, smh').then(m => m.delete({timeout: 5000}));
+        if (!message.member.hasPermission('BAN_MEMBERS', 'ADMINISTRATOR')) {
+            return message.reply('You don\'t have permissions to ban members, smh').then(m => m.delete({timeout: 5000}));
         }
 
         // No bot permissions to ban (it does by default)
-        if (!message.guild.me.hasPermission('BAN_MEMBERS')) {
-            return message.reply('I don\'t have permissions to kick members, please enable them').then(m => m.delete({timeout: 5000}));
+        if (!message.guild.me.hasPermission('BAN_MEMBERS', 'ADMINISTRATOR')) {
+            return message.reply('I don\'t have permissions to ban members, please enable them').then(m => m.delete({timeout: 5000}));
         }
 
         const toBan = message.mentions.members.first() || message.guild.members.cache.get(args[0]);
@@ -47,17 +47,18 @@ module.exports = {
 
         // User not bannable
         if (!toBan.bannable) {
-            return message.reply('I can\'t kick that user due to role hierarchy, I guess').then(m => m.delete({timeout: 5000}));
+            return message.reply('I can\'t ban that user due to role hierarchy, I guess').then(m => m.delete({timeout: 5000}));
         }
         
         
      
-
+        // Log
         const bEmbed = new Discord.MessageEmbed()
             .setColor('#eb8334')
             .setThumbnail(toBan.user.displayAvatarURL)
-            .setFooter(message.member.displayName, message.author.displayAvatarURL)
+            .setFooter(message.member.displayName)
             .setTimestamp()
+            .setDescription('**Ban Action**')
             .addField('Banned member', `${toBan} (${toBan.id})`)
             .addField('Banned by', `${message.author} (${message.author.id})`)
 
@@ -68,7 +69,7 @@ module.exports = {
                 bEmbed.addField('Reason', args.slice(1).join(' '));
             }
             
-
+        // Ban Verification
         const promptEmbed = new Discord.MessageEmbed()
             .setColor('eb8334')
             .setFooter('This verification becomes invalid after 30 seconds')
@@ -86,8 +87,9 @@ module.exports = {
                     .catch(err => {
                         if(error) return message.channel.send('Well... something went wrong');
                     });
-                
                 logChannel.send(bEmbed);
+                message.channel.send(`**${toBan}** has been banned.`)
+
             } else if (emoji === '❌') {
                 msg.delete();
                 message.reply('Ban cancelled.');

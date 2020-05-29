@@ -10,7 +10,7 @@ module.exports = {
         if(!target && toFind)
             target = message.guild.members.cache.find(member => {
                 return member.displayName.toLowerCase().includes(toFind) ||
-                message.user.tag.toLowerCase().includes(toFind)
+                message.user.tag.toLowerCase().includes(toFind);
             });
         
         if(!target)
@@ -20,7 +20,7 @@ module.exports = {
     },
 
     formatDate: function(date) {
-        return new Intl.DateTimeFormat("en-US").format(date);
+        return new Intl.DateTimeFormat('en-US').format(date);
     },
 
     promptMessage: async function(message, author, time, validReactions) {
@@ -32,6 +32,6 @@ module.exports = {
 
         return message
             .awaitReactions(filter, { max: 1, time: time})
-            .then(collected => collected.first() && collected.first().emoji.name)
+            .then(collected => collected.first() && collected.first().emoji.name);
     }
-}
+};

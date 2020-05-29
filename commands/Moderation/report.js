@@ -28,19 +28,19 @@ module.exports = {
         if(!rChannel) return message.channel.send('Couldn\'t find reports channel.');
 
         if(reason && rChannel) {
-        let rEmbed = new Discord.MessageEmbed()
-        .setDescription('**User Report**')
-        .setTimestamp()
-        .setColor('#eb8334')
-        .addField('Reported User', `${rUser}\nID: ${rUser.id}`)
-        .addField('Reported By', `${message.author}\nID: ${message.author.id}`)
-        .addField('Channel', message.channel)
-        .addField('Reported on', message.createdAt)
-        .addField('**Reason**', reason);
+            let rEmbed = new Discord.MessageEmbed()
+                .setDescription('**User Report**')
+                .setTimestamp()
+                .setColor('#eb8334')
+                .addField('Reported User', `${rUser}\nID: ${rUser.id}`)
+                .addField('Reported By', `${message.author}\nID: ${message.author.id}`)
+                .addField('Channel', message.channel)
+                .addField('Reported on', message.createdAt)
+                .addField('**Reason**', reason);
 
-        message.delete().catch(O_o => {})
-        return rChannel.send(rEmbed);
+            message.delete().catch(O_o => {});
+            return rChannel.send(rEmbed);
         }
     
     }
-}
+};

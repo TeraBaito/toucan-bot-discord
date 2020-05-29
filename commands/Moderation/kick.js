@@ -58,14 +58,14 @@ module.exports = {
             .setTimestamp()
             .setDescription('**Kick Action**')
             .addField('Kicked member', `${toKick} (${toKick.id})`)
-            .addField('Kicked by', `${message.author} (${message.author.id})`)
+            .addField('Kicked by', `${message.author} (${message.author.id})`);
 
-            // Add field if reason or if not reason
-            if (!args[1]) {
-                kEmbed.addField('Reason', 'No reason specified');
-            } else {
-                kEmbed.addField('Reason', args.slice(1).join(' '));
-            }
+        // Add field if reason or if not reason
+        if (!args[1]) {
+            kEmbed.addField('Reason', 'No reason specified');
+        } else {
+            kEmbed.addField('Reason', args.slice(1).join(' '));
+        }
             
 
         const promptEmbed = new Discord.MessageEmbed()
@@ -95,4 +95,4 @@ module.exports = {
             }
         });
     }
-}
+};

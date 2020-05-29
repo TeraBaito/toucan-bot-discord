@@ -37,18 +37,6 @@ module.exports = {
             .addField('Roles', uRoles, true)
             .setTimestamp();
 
-        return message.channel.send(userEmbed)
-        
-        // let userEmbed = new Discord.MessageEmbed()
-        //     .setDescription('**User Information**')
-        //     .setColor('#3474eb')
-        //     .setThumbnail(uIcon)
-        //     .addField('Username', message.member.user.tag)
-        //     .addField('User ID', message.member.user.id)
-        //     .addField('Joined Discord On', uCreated)
-        //     .addField('Joined Server On', sJoined)
-            
-        
-        // return message.channel.send(userEmbed);
+        return message.channel.send(userEmbed);
     }
-}
+};

@@ -10,7 +10,7 @@ module.exports = {
 
     run: async(bot, message, args) => {
         const logChannel = message.guild.channels.cache.find(c => c.name === 'toucan-logs') || message.channel;
-        let reason = args.slice(1).join(' ')
+        let reason = args.slice(1).join(' ');
 
         if(message.deletable) message.delete();
 
@@ -57,7 +57,7 @@ module.exports = {
             message.guild.members.unban(toUnban, { reason });
             message.channel.send(`**${toUnban.tag}** has been unbanned from the guild.`);
         } catch(e) {
-            console.log(e)
+            console.log(e);
         }
      
         // Log
@@ -68,15 +68,15 @@ module.exports = {
             .setTimestamp()
             .setDescription('**Unban Action**')
             .addField('Unanned member', `${toUnban} (${toUnban.id})`)
-            .addField('Banned by', `${message.author} (${message.author.id})`)
+            .addField('Banned by', `${message.author} (${message.author.id})`);
 
-            // Add field if reason or if not reason
-            if (!args[1]) {
-                ubEmbed.addField('Reason', 'No reason specified');
-            } else {
-                ubEmbed.addField('Reason', reason);
-            }
+        // Add field if reason or if not reason
+        if (!args[1]) {
+            ubEmbed.addField('Reason', 'No reason specified');
+        } else {
+            ubEmbed.addField('Reason', reason);
+        }
             
-        logChannel.send(ubEmbed)
+        logChannel.send(ubEmbed);
     }
-}
+};

@@ -19,7 +19,7 @@ module.exports = {
 
     run: async (bot, message, args) => {
     
-    console.log(`Invite Command used by ${message.member.user.tag}`);
-    message.channel.send(`**Use this link to invite me to your server:**\n${inviteLink}`);
+        console.log(`Invite Command used by ${message.member.user.tag}`);
+        message.channel.send(`**Use this link to invite me to your server:**\n${inviteLink}`);
     }
-}
+};

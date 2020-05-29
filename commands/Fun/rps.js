@@ -23,24 +23,24 @@ module.exports = {
             if((me === '⛰' && them === '✂') ||
             (me === '✂' && them === '🧻') ||
             (me === '🧻' && them === '⛰')) {
-                return 'aww, you won :c'
+                return 'aww, you won :c';
             } else if (me === them) {
-                return 'It\'s a tie, gg bro'
+                return 'It\'s a tie, gg bro';
             } else {
-                 return 'I win!'
+                return 'I win!';
             }
         }
         
-        const m = await message.channel.send(embed)
+        const m = await message.channel.send(embed);
         const reacted = await promptMessage(m, message.author, 30, chooseArr);
         const botChoice = chooseArr[Math.floor(Math.random() * chooseArr.length)];
-        const result = await getResult(reacted, botChoice)
+        const result = await getResult(reacted, botChoice);
 
         
 
         embed
             .setDescription('')
-            .addField(result, `${reacted} **vs** ${botChoice}`)
+            .addField(result, `${reacted} **vs** ${botChoice}`);
 
         m.edit(embed);
 
@@ -51,4 +51,4 @@ module.exports = {
         
         
     }
-}
+};

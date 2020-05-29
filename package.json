@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node index.js",
+    "start": "nodemon .",
     "production": "NODE.ENV=production&&npm start",
     "development": "NODE.ENV=development&&npm start"
   },
@@ -17,5 +17,8 @@
     "discord.js": "^12.2.0",
     "dotenv": "^8.2.0",
     "nodemon": "^2.0.4"
+  },
+  "devDependencies": {
+    "eslint": "^7.1.0"
   }
 }

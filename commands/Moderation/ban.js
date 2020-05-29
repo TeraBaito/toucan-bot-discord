@@ -1,5 +1,5 @@
 const Discord = require('discord.js');
-const { promptMessage } = require('../../functions.js')
+const { promptMessage } = require('../../functions.js');
 
 module.exports = {
     name: 'ban',
@@ -60,14 +60,14 @@ module.exports = {
             .setTimestamp()
             .setDescription('**Ban Action**')
             .addField('Banned member', `${toBan} (${toBan.id})`)
-            .addField('Banned by', `${message.author} (${message.author.id})`)
+            .addField('Banned by', `${message.author} (${message.author.id})`);
 
-            // Add field if reason or if not reason
-            if (!args[1]) {
-                bEmbed.addField('Reason', 'No reason specified');
-            } else {
-                bEmbed.addField('Reason', args.slice(1).join(' '));
-            }
+        // Add field if reason or if not reason
+        if (!args[1]) {
+            bEmbed.addField('Reason', 'No reason specified');
+        } else {
+            bEmbed.addField('Reason', args.slice(1).join(' '));
+        }
             
         // Ban Verification
         const promptEmbed = new Discord.MessageEmbed()
@@ -88,7 +88,7 @@ module.exports = {
                         if(error) return message.channel.send('Well... something went wrong');
                     });
                 logChannel.send(bEmbed);
-                message.channel.send(`**${toBan}** has been banned.`)
+                message.channel.send(`**${toBan}** has been banned.`);
 
             } else if (emoji === '❌') {
                 msg.delete();
@@ -96,4 +96,4 @@ module.exports = {
             }
         });
     }
-}
+};

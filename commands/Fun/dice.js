@@ -3,7 +3,7 @@ const Discord = require('discord.js');
 module.exports = {
     name: 'dice',
     helpName: 'Dice',
-    category: 'Fun',
+    category: 'Fun', 
     aliases: ['roll', 'roll-dice', 'the-favorite-command-of-a-dnd-fan'],
     usage: 'dice (# of sides)',
     description: 'Rolls a dice with a determined amount of sides, default is 6',
@@ -15,4 +15,4 @@ module.exports = {
             message.channel.send(`🎲 Result: ${Math.floor(Math.random() * args[0]) + 1}`);
         }
     }
-}
+};

@@ -75,7 +75,10 @@ bot.on('message', async message => {
     
     const now = Date.now();
     const timestamps = cooldowns.get(command.name);
-    const cooldownAmount = (command.cooldown ? command.cooldown : 3) * 1000;
+    // const cooldownAmount = (command.cooldown ? command.cooldown : 3) * 1000;
+    let cooldownAmount;
+    if (command.cooldown) cooldownAmount = command.cooldown * 1000
+    else cooldownAmount = 3000
     
     if (timestamps.has(message.author.id)) {
         const expirationTime = timestamps.get(message.author.id) + cooldownAmount;

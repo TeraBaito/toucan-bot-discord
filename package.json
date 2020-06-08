@@ -1,6 +1,6 @@
 {
   "name": "toucan",
-  "version": "1.2.0",
+  "version": "1.2.3",
   "description": "Toucan Bot for Discord",
   "main": "index.js",
   "scripts": {
@@ -19,6 +19,7 @@
     "discord.js": "^12.2.0",
     "dotenv": "^8.2.0",
     "ms": "^2.1.2",
+    "node-fetch": "^2.6.0",
     "nodemon": "^2.0.4"
   },
   "devDependencies": {

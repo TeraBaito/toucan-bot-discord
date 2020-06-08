@@ -28,12 +28,11 @@ let ver = process.env.NODE_ENV;
 
 // turn on bot
 bot.on('ready', () => {
-    // if (ver === 'prod') {
-    //     bot.user.setActivity('out for commands', {type: 'WATCHING'});
-    // } else if (ver === 'dev') {
-    //     bot.user.setActivity('my owner code terribly', {type: 'WATCHING'});
-    // }
-    bot.user.setActivity(`out for commands in ${bot.guilds.cache.size} servers`, {type: 'WATCHING'});
+    if (ver === 'prod') {
+        bot.user.setActivity('out for commands', {type: 'WATCHING'});
+    } else if (ver === 'dev') {
+        bot.user.setActivity('my owner code terribly', {type: 'WATCHING'});
+    }
     console.log(`${bot.user.username} online in ${bot.guilds.cache.size} servers`);
 });
 
@@ -66,7 +65,7 @@ bot.on('message', async message => {
     let command = bot.commands.get(cmd);
     if(!command) command = bot.commands.get(bot.aliases.get(cmd));
 
-    if(command) command.run(bot, message, args);
+
 
     // cooldowns (default is 3s)
     if (!cooldowns.has(command.name)) {
@@ -75,20 +74,17 @@ bot.on('message', async message => {
     
     const now = Date.now();
     const timestamps = cooldowns.get(command.name);
-    // const cooldownAmount = (command.cooldown ? command.cooldown : 3) * 1000;
-    let cooldownAmount;
-    if (command.cooldown) cooldownAmount = command.cooldown * 1000
-    else cooldownAmount = 3000
+    const cooldownAmount = (command.cooldown ? command.cooldown : 3) * 1000;
+    const expirationTime = timestamps.get(message.author.id) + cooldownAmount;
     
     if (timestamps.has(message.author.id)) {
-        const expirationTime = timestamps.get(message.author.id) + cooldownAmount;
-    
         if (now < expirationTime) {
             const timeLeft = (expirationTime - now) / 1000;
             return message.channel.send(`It's cool you're trying to do stuff but could you chill a bit for ${timeLeft.toFixed(1)} seconds?`);
         }
+    } else {
+        if(command) command.run(bot, message, args);
+        timestamps.set(message.author.id, now);
+        setTimeout(() => timestamps.delete(message.author.id), cooldownAmount);
     }
-
-    timestamps.set(message.author.id, now);
-    setTimeout(() => timestamps.delete(message.author.id), cooldownAmount);
 });

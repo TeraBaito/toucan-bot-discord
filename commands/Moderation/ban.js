@@ -6,11 +6,12 @@ module.exports = {
     helpName: 'Ban',
     category: 'Moderation',
     aliases: ['b'],
-    usage: 'ban [@user]',
+    usage: 'ban [user]',
     description: 'Bans a member from the current guild',
 
     run: async(bot, message, args) => {
         const logChannel = message.guild.channels.cache.find(c => c.name === 'toucan-logs') || message.channel;
+        
 
         if(message.deletable) message.delete();
 
@@ -24,12 +25,12 @@ module.exports = {
         
 
         // No permissions to ban
-        if (!message.member.hasPermission('BAN_MEMBERS', 'ADMINISTRATOR')) {
+        if (!message.member.hasPermission('BAN_MEMBERS')) {
             return message.reply('You don\'t have permissions to ban members, smh').then(m => m.delete({timeout: 5000}));
         }
 
         // No bot permissions to ban (it does by default)
-        if (!message.guild.me.hasPermission('BAN_MEMBERS', 'ADMINISTRATOR')) {
+        if (!message.guild.me.hasPermission('BAN_MEMBERS')) {
             return message.reply('I don\'t have permissions to ban members, please enable them').then(m => m.delete({timeout: 5000}));
         }
 
@@ -85,7 +86,7 @@ module.exports = {
 
                 toBan.ban(args.slice(1).join(' '))
                     .catch(err => {
-                        if(error) return message.channel.send('Well... something went wrong');
+                        if(err) return message.channel.send('Well... something went wrong');
                     });
                 logChannel.send(bEmbed);
                 message.channel.send(`**${toBan}** has been banned.`);

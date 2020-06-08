@@ -6,7 +6,7 @@ module.exports = {
     helpName: 'Kick',
     category: 'Moderation',
     aliases: ['k'],
-    usage: ';kick [{@user, ID}] (reason)',
+    usage: ';kick [user] (reason)',
     description: 'Kicks a member from the current guild\n**Attention:** Log channel has to be called #toucan-logs, or else it will log it in the current channel.',
 
     run: async(bot, message, args) => {
@@ -22,12 +22,12 @@ module.exports = {
         }
 
         // No permissions to kick
-        if (!message.member.hasPermission('KICK_MEMBERS', 'ADMINISTRATOR')) {
+        if (!message.member.hasPermission('KICK_MEMBERS')) {
             return await message.reply('You don\'t have permissions to kick members, smh').then(m => m.delete({timeout: 5000}));
         }
 
         // No bot permissions to kick (it does by default)
-        if (!message.guild.me.hasPermission('KICK_MEMBERS', 'ADMINISTRATOR')) {
+        if (!message.guild.me.hasPermission('KICK_MEMBERS')) {
             return await message.reply('I don\'t have permissions to kick members, please enable them').then(m => m.delete({timeout: 5000}));
         }
 
@@ -83,7 +83,7 @@ module.exports = {
 
                 toKick.kick(args.slice(1).join(' '))
                     .catch(err => {
-                        if(error) return message.channel.send('Well... something went wrong');
+                        if(err) return message.channel.send('Well... something went wrong');
                     });
                 
                 logChannel.send(kEmbed);

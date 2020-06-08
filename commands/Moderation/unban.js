@@ -19,11 +19,7 @@ module.exports = {
         // No args
         if (!args[0]) {
             return message.reply('Please provide a user to unban').then(m => m.delete({timeout: 5000}));
-        }
-
-      
-
-       
+        }       
 
         // No permissions to unban
         if (!message.member.hasPermission('BAN_MEMBERS', 'ADMINISTRATOR')) {
@@ -34,10 +30,6 @@ module.exports = {
         if (!message.guild.me.hasPermission('BAN_MEMBERS', 'ADMINISTRATOR')) {
             return message.reply('I don\'t have permissions to unban members, please enable them').then(m => m.delete({timeout: 5000}));
         }
-
-        
-
-        // No member found
         
         // Finding Nemo, I mean the banned user
         let toUnban;
@@ -61,14 +53,13 @@ module.exports = {
         }
      
         // Log
-        
         const ubEmbed = new Discord.MessageEmbed()
             .setColor('#228b22')
             .setFooter(message.member.displayName)
             .setTimestamp()
             .setDescription('**Unban Action**')
-            .addField('Unanned member', `${toUnban} (${toUnban.id})`)
-            .addField('Banned by', `${message.author} (${message.author.id})`);
+            .addField('Unbanned member', `${toUnban} (${toUnban.id})`)
+            .addField('Unbanned by', `${message.author} (${message.author.id})`);
 
         // Add field if reason or if not reason
         if (!args[1]) {

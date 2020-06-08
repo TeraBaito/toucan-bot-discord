@@ -28,11 +28,12 @@ let ver = process.env.NODE_ENV;
 
 // turn on bot
 bot.on('ready', () => {
-    if (ver === 'prod') {
-        bot.user.setActivity('out for commands', {type: 'WATCHING'});
-    } else if (ver === 'dev') {
-        bot.user.setActivity('my owner code terribly', {type: 'WATCHING'});
-    }
+    // if (ver === 'prod') {
+    //     bot.user.setActivity('out for commands', {type: 'WATCHING'});
+    // } else if (ver === 'dev') {
+    //     bot.user.setActivity('my owner code terribly', {type: 'WATCHING'});
+    // }
+    bot.user.setActivity(`out for commands in ${bot.guilds.cache.size} servers`, {type: 'WATCHING'});
     console.log(`${bot.user.username} online in ${bot.guilds.cache.size} servers`);
 });
 

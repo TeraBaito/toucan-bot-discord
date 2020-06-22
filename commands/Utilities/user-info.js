@@ -1,6 +1,5 @@
 const Discord = require('discord.js');
-const fs = require('fs');
-const { getMember, formatDate } = require('../../functions.js');
+const { getMember, formatDate } = require('../../handlers/functions.js');
 
 module.exports = {
     name: 'user-info',

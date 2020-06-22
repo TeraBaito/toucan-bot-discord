@@ -1,5 +1,5 @@
 const Discord = require('discord.js');
-const { promptMessage } = require('../../functions.js');
+const { promptMessage } = require('../../handlers/functions.js');
 
 module.exports = {
     name: 'mute',

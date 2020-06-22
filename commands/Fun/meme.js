@@ -1,5 +1,4 @@
 const Discord = require('discord.js');
-// const superagent = require('superagent');
 const fetch = require('node-fetch');
 
 module.exports = {

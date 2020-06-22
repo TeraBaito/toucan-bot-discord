@@ -1,6 +1,6 @@
 const Discord = require('discord.js');
 const { stripIndents } = require('common-tags');
-const { randomizePercentage } = require('../../functions.js');
+const { randomizePercentage } = require('../../handlers/functions.js');
 
 module.exports = {
     name: 'ship',

@@ -1,6 +1,6 @@
 const Discord = require('discord.js');
 const fs = require('fs');
-const {getMember, formatDate } = require('../../functions.js');
+const { getMember, formatDate } = require('../../functions.js');
 
 module.exports = {
     name: 'user-info',
@@ -13,7 +13,7 @@ module.exports = {
     run: async (bot, message, args) => {
         const member = getMember(message, args.join(' '));
 
-        //Information Variables
+        // Information Variables
         const uIcon = member.user.displayAvatarURL();
         const uRoles = member.roles
             .cache.filter(r => r.id !== message.guild.id)

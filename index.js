@@ -13,6 +13,7 @@ bot.categories = fs.readdirSync('./commands/');
 
 const cooldowns = new Discord.Collection();
 
+
 // handler folder 
 ['command'].forEach(handler => {
     require(`./handlers/${handler}`)(bot);
@@ -39,10 +40,26 @@ bot.on('ready', () => {
 
 // core
 bot.on('message', async message => {
-    const prefix = process.env.PREFIX;
+
+
+    // Prefix
+    let prefixes = JSON.parse(fs.readFileSync('./handlers/prefixes.json', 'utf-8'));
+    if (!prefixes[message.guild.id]) {
+        prefixes[message.guild.id] = {
+            prefixes: process.env.PREFIX
+        };
+    };
+
+    let prefix = prefixes[message.guild.id].prefixes;
+
+    // Show prefix when mentioned
+    const mentionRegex = new RegExp(`^<@!?${bot.user.id}>`);
+    if (message.content.match(mentionRegex)) {
+        return message.channel.send(`My prefix is \`${prefix}\``);
+    }
+
     const args = message.content.slice(prefix.length).trim().split(/ +/g);
     const cmd = args.shift().toLowerCase();
- 
 
        
     /* ";config prefix ?" in which:

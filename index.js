@@ -87,9 +87,7 @@ bot.on('message', async message => {
     // cooldowns (default is 3s)
     if (!cooldowns.has(command.name)) {
         cooldowns.set(command.name, new Discord.Collection());
-    }.catch(err => {
-		return 'Error'
-	})
+    }
     
     const now = Date.now();
     const timestamps = cooldowns.get(command.name);

@@ -12,7 +12,7 @@ module.exports = {
     run: async (bot, message, args) => {
 
         if (message.deletable) message.delete();
-        if (args.length < 1) return (await message.send('Bruh you didn\'t even give me a message, what am I supposed to do, read your mind?'));
+        if (args.length < 1) return (await message.channel.send('Bruh you didn\'t even give me a message, what am I supposed to do, read your mind?'));
         if (args[0].toLowerCase() === 'embed') {
             const sayEmbed = new Discord.MessageEmbed()
                 .setColor('#228b22')

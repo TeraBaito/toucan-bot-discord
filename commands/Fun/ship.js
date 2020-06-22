@@ -1,6 +1,6 @@
 const Discord = require('discord.js');
 const { stripIndents } = require('common-tags');
-const { randomizePercentage } = require('../../../../../Documents/GitHub/toucan-bot-discord/handlers/functions.js.js');
+const { randomizePercentage } = require('../../functions.js');
 
 module.exports = {
     name: 'ship',

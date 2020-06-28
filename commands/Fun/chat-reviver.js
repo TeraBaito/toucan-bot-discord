@@ -75,11 +75,16 @@ module.exports = {
         } else if (args[0] === 'list') {
             if (!message.member.hasPermission('MANAGE_SERVER')) return message.channel.send('You don\'t have enough permissions to do this!');
 
+            const getResults = array => {
+                if (array.length === 0) return 'None'; 
+                else return array.join('\n');
+            };
+
             message.channel.send(stripIndents`**·Approved answers:**
-            ${this.approvedArray.join('\n')}
+            ${getResults(this.approvedArray)}
             
             **·Pending Requests:**
-            ${this.requestsArray.join('\n')}`);
+            ${getResults(this.requestsArray)}`);
 
         // Delete args (bot owner only)
         } else if (args[0] === 'delete') {

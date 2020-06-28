@@ -12,14 +12,14 @@ module.exports = {
 
     run: async(bot, message, args) => {
         let msg = await message.channel.send('Generating...');
-        const url = 'http://aws.random.cat/meow';
+        const url = 'https://some-random-api.ml/img/cat';
 
         fetch(url).then(res => {
             return res.json();
         }).then(val => {
             let mEmbed = new Discord.MessageEmbed()
                 .setColor('#ffd700')
-                .setImage(val.file)
+                .setImage(val.link)
                 .setFooter('Powered by ' + url);
 
             message.channel.send(mEmbed);

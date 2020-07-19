@@ -13,16 +13,24 @@ module.exports = {
         const member = getMember(message, args.join(' '));
 
         // Information Variables
+
+        // pfp
         const uIcon = member.user.displayAvatarURL();
-        const uRoles = member.roles
+
+        // user roles as strings
+        let uRoles = member.roles
             .cache.filter(r => r.id !== message.guild.id)
             .map(r => r)
-            .join(', ')  || 'none';    
+            .join(' ')  || 'none';
+            
+        // discord creation and server join date
         const uCreated = formatDate(member.user.createdAt);
-
         const sJoined = formatDate(member.joinedAt);
         
+        // if the embed is more than 1024 chars it will error
+        if (uRoles.length > 650) uRoles = 'Too much roles to show!';
         
+        // embed
         const userEmbed = new Discord.MessageEmbed()
             .setDescription('**User Information**')
             .setFooter(member.displayName, uIcon)
@@ -33,9 +41,12 @@ module.exports = {
             .addField('User ID', member.user.id)
             .addField('Joined Discord On', member.user.createdAt)
             .addField('Joined Server On', sJoined)
+            .addField('Roles Count', member.roles.cache.size)
             .addField('Roles', uRoles, true)
             .setTimestamp();
 
-        return message.channel.send(userEmbed);
+        message.channel.send(userEmbed);
+        // console.log(uRoles.split(/ +/g).length);
+        // console.log(uRoles.length);
     }
 };

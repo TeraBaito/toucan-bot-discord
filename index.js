@@ -87,7 +87,7 @@ bot.on('message', async message => {
     // cooldowns (default is 3s)
     if (!cooldowns.has(command.name)) {
         try {
-            cooldowns.set(command.name, new Discord.Collection());
+            return cooldowns.set(command.name, new Discord.Collection());
         } catch (e) {
             return;
         }

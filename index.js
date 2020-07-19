@@ -85,12 +85,12 @@ bot.on('message', async message => {
 
 
     // cooldowns (default is 3s)
-    if (!cooldowns.has(command.name)) {
-        try {
-            return cooldowns.set(command.name, new Discord.Collection());
-        } catch (e) {
-            return;
+    try {
+        if (!cooldowns.has(command.name)) {
+            cooldowns.set(command.name, new Discord.Collection());
         }
+    } catch (e) {
+        return;
     }
     
     const now = Date.now();

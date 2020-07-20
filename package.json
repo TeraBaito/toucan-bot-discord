@@ -1,6 +1,6 @@
 {
   "name": "toucan",
-  "version": "1.3.3",
+  "version": "1.3.4",
   "description": "Toucan Bot for Discord",
   "main": "index.js",
   "scripts": {

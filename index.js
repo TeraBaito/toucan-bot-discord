@@ -90,7 +90,11 @@ bot.on('message', async message => {
             cooldowns.set(command.name, new Discord.Collection());
         }
     } catch (e) {
-        return;
+        if (e instanceof TypeError) {
+            return;
+        } else {
+            return console.error(e);
+        }
     }
     
     const now = Date.now();

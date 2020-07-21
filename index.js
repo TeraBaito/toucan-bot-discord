@@ -5,6 +5,7 @@ const bot = new Discord.Client();
 const fs = require('fs');
 const { isNullOrUndefined } = require('util');
 
+let i = 0;
 
 bot.commands = new Discord.Collection();
 bot.aliases = new Discord.Collection();

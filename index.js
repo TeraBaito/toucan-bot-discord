@@ -21,7 +21,7 @@ const cooldowns = new Discord.Collection();
 
 // env
 config ({
-    path: `${__dirname}/.gitignore/.env`
+    path: `${__dirname}/.env`
 });
 
 bot.login(process.env.TOKEN);

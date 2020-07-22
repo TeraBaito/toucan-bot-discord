@@ -1,6 +1,6 @@
 // modules
 const Discord = require('discord.js');
-const { config } = require('dotenv');
+// const { config } = require('dotenv');
 const bot = new Discord.Client(); 
 const fs = require('fs');
 const { isNullOrUndefined } = require('util');
@@ -21,9 +21,11 @@ const cooldowns = new Discord.Collection();
 });
 
 // env
+/*
 config ({
     path: `${__dirname}/.env`
 });
+*/
 
 bot.login(process.env.TOKEN);
 // let ver = process.env.NODE_ENV;

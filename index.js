@@ -1,3 +1,11 @@
+// For Hosting in VPS
+const express = require('express');
+const app = express();
+const port = 300;
+
+app.get('/', (req, res) => res.send('Working'));
+app.listen(port, () => console.log(`Toucan listening at http://localhost:${port}`));
+
 // modules
 const Discord = require('discord.js');
 // const { config } = require('dotenv');

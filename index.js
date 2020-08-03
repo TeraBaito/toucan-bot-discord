@@ -1,7 +1,7 @@
 // For Hosting in VPS
 const express = require('express');
 const app = express();
-const port = 300;
+const port = 3000;
 
 app.get('/', (req, res) => res.send('Working'));
 app.listen(port, () => console.log(`Toucan listening at http://localhost:${port}`));

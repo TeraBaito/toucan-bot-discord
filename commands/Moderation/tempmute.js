@@ -15,7 +15,7 @@ module.exports = {
         const toTempmute = message.mentions.members.first() || message.guild.members.cache.get(args[0]);
         const muterole = message.guild.roles.cache.find(r => r.name === 'Muted');
         let mutetime = args[1];
-        let reason = args[3] ? args.slice(2).join(' ') : 'No reason specified';
+        let reason = args[2] ? args.slice(2).join(' ') : 'No reason specified';
 
         // No muterole, creates a muterole :)
         if(!muterole) {

@@ -15,7 +15,7 @@ module.exports = {
         const logChannel = message.guild.channels.cache.find(c => c.name === 'toucan-logs') || message.channel;
         const toTempban = message.mentions.members.first() || message.guild.members.cache.get(args[0]);
         let bantime = args[1];
-        let reason = args.slice(2) ? args.slice(2).join(' ') : 'No reason specified.';
+        let reason = args[3] ? args.slice(2).join(' ') : 'No reason specified';
 
 
         if(message.deletable) message.delete();

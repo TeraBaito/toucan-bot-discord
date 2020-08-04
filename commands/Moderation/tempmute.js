@@ -15,6 +15,7 @@ module.exports = {
         const toTempmute = message.mentions.members.first() || message.guild.members.cache.get(args[0]);
         const muterole = message.guild.roles.cache.find(r => r.name === 'Muted');
         let mutetime = args[1];
+        let reason = args.slice(2) ? args.slice(2).join(' ') : 'No reason specified.';
 
         // No muterole, creates a muterole :)
         if(!muterole) {
@@ -85,14 +86,9 @@ module.exports = {
             .setDescription('**Temporary Mute Action**')
             .addField('Muted member', `${toTempmute} (${toTempmute.id})`)
             .addField('Muted by', `${message.author} (${message.author.id})`)
-            .addField('Mute time', ms(ms(mutetime)));
+            .addField('Mute time', ms(ms(mutetime)))
+            .addField('Reason', reason);
 
-        // Add field if reason or if not reason
-        if (!args[1]) {
-            mEmbed.addField('Reason', 'No reason specified');
-        } else {
-            mEmbed.addField('Reason', args.slice(1).join(' '));
-        }
 
         const umEmbed = new Discord.MessageEmbed()
             .setColor('#eb8334')

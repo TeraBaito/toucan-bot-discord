@@ -15,7 +15,7 @@ module.exports = {
         const logChannel = message.guild.channels.cache.find(c => c.name === 'toucan-logs') || message.channel;
         const toTempban = message.mentions.members.first() || message.guild.members.cache.get(args[0]);
         let bantime = args[1];
-        let reason = args.slice(2).join(' ');
+        let reason = args.slice(2) ? args.slice(2).join(' ') : 'No reason specified.';
 
 
         if(message.deletable) message.delete();
@@ -65,14 +65,9 @@ module.exports = {
             .setDescription('**Temporary Ban Action**')
             .addField('Banned member', `${toTempban} (${toTempban.id})`)
             .addField('Banned by', `${message.author} (${message.author.id})`)
-            .addField('Ban time', ms(ms(bantime)));
+            .addField('Ban time', ms(ms(bantime)))
+            .addField('Reason', reason);
 
-        // Add field if reason or if not reason
-        if (!args[1]) {
-            bEmbed.addField('Reason', 'No reason specified');
-        } else {
-            bEmbed.addField('Reason', reason);
-        }
 
         const ubEmbed = new Discord.MessageEmbed()
             .setColor('#228b22')

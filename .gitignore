@@ -1,7 +1,17 @@
-.env
+# Use `npm install` to install all modules
 node_modules/*
+
+# Code editor stuffs
 .vscode/*
-package-lock.json
-template.txt
-handlers/prefixes.json
+
+# Archived commands I don't want to commit
 archived-commands/*
+
+# Token and config vars
+.env
+
+# Self-aids
+template.txt
+
+# Prefixes JSON file (has server IDs)
+handlers/prefixes.json

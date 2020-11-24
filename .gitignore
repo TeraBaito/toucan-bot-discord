@@ -8,7 +8,7 @@ node_modules/*
 archived-commands/*
 
 # Token and config vars
-.env
+config.json
 
 # Self-aids
 template.txt

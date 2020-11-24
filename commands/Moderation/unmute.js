@@ -1,8 +1,4 @@
-const Discord = require('discord.js'),
-    { logs } = require('../../config.json'),
-    colors = require('../../colors.json'),
-    { getMember } = require('../../handlers/functions');
-
+const Discord = require('discord.js');
 
 module.exports = {
     name: 'unmute',
@@ -14,8 +10,8 @@ module.exports = {
     description: 'Unmutes an already muted member from the guild.\n**Attention:** The muterole has to be called "Muted", and the log channel #toucan-logs',
 
     run: async(bot, message, args) => {
-        const logChannel = message.guild.channels.cache.get(logs) || message.channel;
-        const toUnmute = await getMember(message, args[0]);
+        const logChannel = message.guild.channels.cache.find(c => c.name === 'toucan-logs') || message.channel;
+        const toUnmute = message.mentions.members.first() || message.guild.members.cache.get(args[0]);
         const muterole = message.guild.roles.cache.find(r => r.name === 'Muted');
 
         // Member doesn't have perms to unmute
@@ -50,7 +46,7 @@ module.exports = {
         }
 
         const umEmbed = new Discord.MessageEmbed()
-            .setColor(colors.Orange)
+            .setColor('#eb8334')
             .setThumbnail(toUnmute.user.displayAvatarURL)
             .setFooter(message.member.displayName)
             .setTimestamp()

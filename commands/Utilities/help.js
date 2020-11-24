@@ -1,10 +1,14 @@
-const Discord = require('discord.js'),
-    { stripIndents } = require('common-tags'),
-    { prefix } = require('../../config.json'),
-    colors = require('../../colors.json');
+const Discord = require('discord.js');
+const bot = new Discord.Client();
+const { stripIndents } = require('common-tags');
+const { config } = require('dotenv');
 
 
+config ({
+    path: './.gitignore/.env'
+});
 
+const prefix = process.env.PREFIX;
 
 module.exports = { 
     name: 'help',
@@ -26,7 +30,7 @@ module.exports = {
 
 function getAll(bot, message) {
     const embed = new Discord.MessageEmbed()
-        .setColor(colors.Orange)
+        .setColor('#eb8334')
         .setFooter('Syntax: () = optional, [] = required, {a, b} = choose between a or b');
     
     const commands = (category) => {
@@ -49,9 +53,10 @@ function getCmd(bot, message, input) {
         .setFooter('Syntax: () = optional; [] = required; {a, b} = choose between a or b');
 
     const cmd = bot.commands.get(input.toLowerCase()) || bot.commands.get(bot.aliases.get(input.toLowerCase()));
+    let info = `**${input.toLowerCase()}** is not a command?`;
 
     if(!cmd) {
-        return message.channel.send(`**${input.toLowerCase()}** is not a command?`);
+        return message.channel.send(info);
     }
 
     if(cmd.name) embed.setDescription(`**${cmd.helpName} Command**`);

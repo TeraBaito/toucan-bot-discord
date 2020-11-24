@@ -1,7 +1,4 @@
-const Discord = require('discord.js'),
-    { logs } = require('../../config.json'),
-    colors = require('../../colors.json'),
-    { getMember } = require('../../handlers/functions');
+const Discord = require('discord.js');
 
 module.exports = {
     name: 'removerole',
@@ -14,14 +11,13 @@ module.exports = {
 
     run: async(bot, message, args) => {
         let role = message.guild.roles.cache.find(r => r.name.toLowerCase() === args[1]) || message.guild.roles.cache.find(r => r.id === args[1]) || message.mentions.roles.first();
-        let toRemoveRole = await getMember(message, args[0]);
-        let logChannel = message.guild.channels.cache.get(logs) || message.channel;
+        let toRemoveRole = message.mentions.members.first() || message.guild.members.cache.get(args[0]);
+        let logChannel = message.guild.channels.cache.find(c => c.name.toLowerCase() === 'toucan-logs') || message.channel;
 
-        if(message.deletable) message.delete();
 
         // Putting the embed up here so it doesn't error bc of hoisting
         let rEmbed = new Discord.MessageEmbed()
-            .setColor(role.hexColor !== colors.Black ? role.hexColor : colors.PaleBlue)
+            .setColor(role.id.hexColor || '#293749')
             .setDescription('**Removed Role from User**')
             .setTimestamp()
             .addField('Removed from', `${toRemoveRole} (${toRemoveRole.id})`)
@@ -50,10 +46,11 @@ module.exports = {
         if (!toRemoveRole.roles.cache.has(role.id)) {
             message.channel.send('I\'m not removing a role from someone that doesn\'t have it...')
                 .then(m => m.delete({timeout: 5000}));
-        }
 
-        await toRemoveRole.roles.remove(role.id);
-        message.channel.send(`Succesfully removed the role **${role.name}** from **${toRemoveRole.user.username}**!`);
-        logChannel.send(rEmbed);
+        } else {
+            await toRemoveRole.roles.remove(role.id);
+            message.channel.send(`Succesfully removed the role ${role} from ${toRemoveRole.displayName}!`);
+            logChannel.send(rEmbed);
+        }
     }
 };

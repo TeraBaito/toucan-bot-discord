@@ -1,7 +1,5 @@
-const Discord = require('discord.js'),
-    { logs } = require('../../config.json'),
-    colors = require('../../colors.json'),
-    { promptMessage, getMember } = require('../../handlers/functions');
+const Discord = require('discord.js');
+const { promptMessage } = require('../../handlers/functions.js');
 
 module.exports = {
     name: 'ban',
@@ -12,9 +10,9 @@ module.exports = {
     description: 'Bans a member from the current guild',
 
     run: async(bot, message, args) => {
-        const logChannel = message.guild.channels.cache.get(logs) || message.channel;
-        const toBan = await getMember(message, args[0]);
+        const logChannel = message.guild.channels.cache.find(c => c.name === 'toucan-logs') || message.channel;
         
+
         if(message.deletable) message.delete();
 
         // Checks of when using command
@@ -23,6 +21,8 @@ module.exports = {
         if (!args[0]) {
             return message.reply('Please provide a user to ban').then(m => m.delete({timeout: 5000}));
         }
+
+        
 
         // No permissions to ban
         if (!message.member.hasPermission('BAN_MEMBERS')) {
@@ -34,6 +34,7 @@ module.exports = {
             return message.reply('I don\'t have permissions to ban members, please enable them').then(m => m.delete({timeout: 5000}));
         }
 
+        const toBan = message.mentions.members.first() || message.guild.members.cache.get(args[0]);
 
         // No member found
         if (!toBan) {
@@ -50,10 +51,11 @@ module.exports = {
             return message.reply('I can\'t ban that user due to role hierarchy, I guess').then(m => m.delete({timeout: 5000}));
         }
         
+        
      
         // Log
         const bEmbed = new Discord.MessageEmbed()
-            .setColor(colors.Orange)
+            .setColor('#eb8334')
             .setThumbnail(toBan.user.displayAvatarURL)
             .setFooter(message.member.displayName)
             .setTimestamp()
@@ -75,6 +77,7 @@ module.exports = {
             .setDescription(`Do you want to ban ${toBan}?`);
 
         
+
         message.channel.send(promptEmbed).then(async msg => {
             const emoji = await promptMessage(msg, message.author, 30, ['✅', '❌']);
             

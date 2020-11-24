@@ -1,33 +1,31 @@
-const Discord = require('discord.js'),
-    colors = require('../../colors.json');
+const Discord = require('discord.js');
 
 module.exports = {
     name: 'say',
     helpName: 'Say',
     category: 'Utilities',
     aliases: ['echo'],
-    usage: 'say [#channel] (embed) [message]',
-    description: 'Echoes the given args',
+    usage: 'say (embed) ...',
+    description: 'Takes the argument and sends them back as text, then deletes the command. If the first argument is "embed", it will send an embed.\n**Attention:** The user needs the "Manage Messages" permission to use this command.',
 
-    run: async(bot, message, args) => {
-        let channel = message.mentions.channels.first() ||
-        message.guild.channels.cache.find(c => c.id == args[0]) ||
-        message.guild.channels.cache.find(c => c.name == args[0]);
 
-        if (!channel) return message.channel.send('Couldn\'t find a channel with the arguments provided');
-    
-        if (!message.member.hasPermission('MANAGE_MESSAGES')) return;
+    run: async (bot, message, args) => {
+
 
         if (message.deletable) message.delete();
-        
-        if (args[1] == 'embed') {
-            const embed = new Discord.MessageEmbed()
-                .setColor(colors.ForestGreen)
-                .setDescription(args.slice(2).join(' '));
-            
-            channel.send(embed);
+        if (args.length < 1) return (await message.channel.send('Bruh you didn\'t even give me a message, what am I supposed to do, read your mind?'));
+        if (!message.member.hasPermission('MANAGE_MESSAGES')) {
+            message.channel.send('You cannot use this command, sorry, you miss the fun')
+                .then(m => m.delete({timeout: 5000}));
         } else {
-            channel.send(args.slice(1).join(' '));
+            if (args[0].toLowerCase() === 'embed') {
+                const sayEmbed = new Discord.MessageEmbed()
+                    .setColor('#228b22')
+                    .setDescription(args.slice(1).join(' '));
+                message.channel.send(sayEmbed);
+            } else {
+                message.channel.send(args.join(' '));
+            }
         }
     }
 };

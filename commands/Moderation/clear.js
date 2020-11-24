@@ -1,19 +1,15 @@
-const Discord = require('discord.js'),
-    chalk = require('chalk'),
-    { logs } = require('../../config.json'),
-    colors = require('../../colors.json');
+const Discord = require('discord.js');
 
 module.exports = {
     name: 'clear',
     helpName: 'Clear',
     category: 'Moderation',
-    aliases: ['purge'],
+    // aliases: [],
     // cooldown: ,
     usage: 'clear [amount of messages]',
     description: 'Clears a specified amount of messages in the current channel, up to 100 messages',
 
     run: async(bot, message, args) => {
-        let logChannel = message.guild.channels.cache.get(logs);
         if (message.deletable) message.delete;
 
         // Member doesn't have perms to delete messages
@@ -35,7 +31,7 @@ module.exports = {
         }
 
         if (parseInt(args[0] <= 0)) {
-            return message.channel.send('Can you send a number that is not 0 or less, you\'re just wasting my time...')
+            return message.channel.send('Can you send a number that is not 0, you\'re just wasting my time...')
                 .then(m => m.delete({timeout: 5000}));
         }
 
@@ -47,24 +43,13 @@ module.exports = {
             deleteAmount = parseInt(args[0]) + 1;
         }
 
-        // Embed
-        let embed = new Discord.MessageEmbed()
-            .setColor(colors.Gray)
-            .setTimestamp()
-            .setDescription('Purged Messages')
-            .addField('Purged by', `${message.member.user.tag} (${message.member.id})`)
-            .addField('Purged messages', deleteAmount);
-
         message.channel.bulkDelete(deleteAmount, true)
-            .then(deletedNum => {
-                message.channel.send(`Deleted \`${deletedNum.size - 1}\` messages. It didn't delete messages older than two weeks old btw`)
-                    .then(m => m.delete({timeout: 5000}));
-
-                logChannel.send(embed);
-            })            
+            .then(deletedNum => message.channel.send(`Deleted \`${deletedNum.size - 1}\` messages. It didn't delete messages older than two weeks old btw`)
+                .then(m => m.delete({timeout: 5000})))
+                
             .catch(err => {
                 message.channel.send('Something went wrong...');
-                console.error(`${chalk.redBright('[Error]')} ${err.stack}`);
+                console.log(err);
             });
     }
 };

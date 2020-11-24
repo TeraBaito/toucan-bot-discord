@@ -1,18 +1,20 @@
-const Discord = require('discord.js');
-const { promptMessage } = require('../../handlers/functions.js');
+const Discord = require('discord.js'),
+    { logs } = require('../../config.json'),
+    colors = require('../../colors.json'),
+    { getMember } = require('../../handlers/functions');
+    
 
 module.exports = {
     name: 'mute',
     helpName: 'Mute',
     category: 'Moderation',
     aliases: ['m'],
-    // cooldown: ,
     usage: 'mute [user] (reason)',
     description: 'Mutes a member from the guild for an indefinite amount of time.\n**Attention:** The muterole has to be called "Muted", and the log channel #toucan-logs',
 
     run: async(bot, message, args) => {
-        const logChannel = message.guild.channels.cache.find(c => c.name === 'toucan-logs') || message.channel;
-        const toMute = message.mentions.members.first() || message.guild.members.cache.get(args[0]);
+        const logChannel = message.guild.channels.cache.get(logs) || message.channel;
+        const toMute = await getMember(message, args[0]);
         const muterole = message.guild.roles.cache.find(r => r.name === 'Muted');
 
         // No muterole, creates a muterole :)
@@ -67,12 +69,12 @@ module.exports = {
         }
 
         // Member to mute has permissions to mute
-        if (toMute.hasPermission('KICK_MEMBERS', 'BAN_MEMBERS', 'MANAGE_ROLES') && !message.member.hasPermission('ADMINISTRATOR')) {
+        if (toMute.hasPermission(['KICK_MEMBERS', 'BAN_MEMBERS', 'MANAGE_ROLES']) && !message.member.hasPermission('ADMINISTRATOR')) {
             return message.channel.send('You can\'t mute a person that can mute you too, don\'t even bother...');
         }
 
         const mEmbed = new Discord.MessageEmbed()
-            .setColor('#eb8334')
+            .setColor(colors.Orange)
             .setThumbnail(toMute.user.displayAvatarURL)
             .setFooter(message.member.displayName)
             .setTimestamp()
@@ -87,11 +89,7 @@ module.exports = {
             mEmbed.addField('Reason', args.slice(1).join(' '));
         }
 
-        const promptEmbed = new Discord.MessageEmbed()
-            .setColor('eb8334')
-            .setFooter('This verification becomes invalid after 30 seconds')
-            .setDescription(`Do you want to mute ${toMute}?`);
-
+        // Mute
         if (toMute.roles.cache.find(r => r.name === 'Muted')) {
             return message.channel.send('This person is already muted')
                 .then(m => m.delete({timeout: 5000}));

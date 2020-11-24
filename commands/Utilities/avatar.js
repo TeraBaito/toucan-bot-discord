@@ -1,5 +1,6 @@
-const Discord = require('discord.js');
-const { getMember } = require('../../handlers/functions.js');
+const Discord = require('discord.js'),
+    colors = require('../../colors.json'),
+    { getMember } = require('../../handlers/functions.js');
 
 module.exports = {
     name: 'avatar',
@@ -11,11 +12,11 @@ module.exports = {
     description: 'Shows the profile picture of you or a specified user',
 
     run: async(bot, message, args) => {
-        let member = getMember(message, args.join(' '));
+        let member = await getMember(message, args.join(' '));
         const uIcon = member.user.displayAvatarURL();
 
         const aEmbed = new Discord.MessageEmbed()
-            .setColor('228b22')
+            .setColor(colors.ForestGreen)
             .setDescription(`**${member.displayName}'s Avatar**`)
             .setImage(uIcon);
 

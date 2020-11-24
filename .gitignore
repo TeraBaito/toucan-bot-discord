@@ -1,17 +1,21 @@
-# Use `npm install` to install all modules
+# Use `npm install` to install all required modules 
 node_modules/*
 
-# Code editor stuffs
-.vscode/*
+# Legacy stuff
+legacy/*
 
-# Archived commands I don't want to commit
-archived-commands/*
+# Linter
+.eslintrc.json
 
-# Token and config vars
+# ENV file with token
 .env
+
+# VS Code
+.vscode/*
+template.config.js
+
+# Sensitive language
+handlers/blacklisted-words.json
 
 # Self-aids
 template.txt
-
-# Prefixes JSON file (has server IDs)
-handlers/prefixes.json

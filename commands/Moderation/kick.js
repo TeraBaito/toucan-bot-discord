@@ -1,16 +1,20 @@
-const Discord = require('discord.js');
-const { promptMessage } = require('../../handlers/functions.js');
+const Discord = require('discord.js'),
+    { logs } = require('../../config.json'),
+    colors = require('../../colors.json'),
+    { promptMessage, getMember } = require('../../handlers/functions');
+    
 
 module.exports = {
     name: 'kick',
     helpName: 'Kick',
     category: 'Moderation',
     aliases: ['k'],
-    usage: ';kick [user] (reason)',
+    usage: 'kick [user] (reason)',
     description: 'Kicks a member from the current guild\n**Attention:** Log channel has to be called #toucan-logs, or else it will log it in the current channel.',
 
     run: async(bot, message, args) => {
-        const logChannel = message.guild.channels.cache.find(c => c.name === 'toucan-logs') || message.channel;
+        const logChannel = message.guild.channels.cache.get(logs) || message.channel;
+        const toKick = await getMember(message, args[0]);
 
         // Checks of when using command
         
@@ -18,41 +22,37 @@ module.exports = {
 
         // No args
         if (!args[0]) {
-            return await message.reply('Please provide a user to kick').then(m => m.delete({timeout: 5000}));
+            return message.channel.send('Please provide a user to kick').then(m => m.delete({timeout: 5000}));
         }
 
         // No permissions to kick
         if (!message.member.hasPermission('KICK_MEMBERS')) {
-            return await message.reply('You don\'t have permissions to kick members, smh').then(m => m.delete({timeout: 5000}));
+            return message.channel.send('You don\'t have permissions to kick members, smh').then(m => m.delete({timeout: 5000}));
         }
 
         // No bot permissions to kick (it does by default)
         if (!message.guild.me.hasPermission('KICK_MEMBERS')) {
-            return await message.reply('I don\'t have permissions to kick members, please enable them').then(m => m.delete({timeout: 5000}));
+            return message.channel.send('I don\'t have permissions to kick members, please enable them').then(m => m.delete({timeout: 5000}));
         }
-
-        const toKick = message.mentions.members.first() || message.guild.members.cache.get(args[0]);
 
         // No member found
         if (!toKick) {
-            return message.reply('Couldn\'t find that member, try again').then(m => m.delete({timeout: 5000}));
+            return message.channel.send('Couldn\'t find that member, try again').then(m => m.delete({timeout: 5000}));
         }
 
         // Can't kick yourself (bruh moment)
         if (message.author.id === toKick.id) {
-            return message.reply('You can\'t kick yourself, bruh moment');
+            return message.channel.send('You can\'t kick yourself, bruh moment');
         }
 
         // User not kickable
         if (!toKick.kickable) {
-            return message.reply('I can\'t kick that user due to role hierarchy, I guess').then(m => m.delete({timeout: 5000}));
-        }
-        
-        
-     
+            return message.channel.send('I can\'t kick that user due to role hierarchy, I guess').then(m => m.delete({timeout: 5000}));
+        } 
 
+        // Embed
         const kEmbed = new Discord.MessageEmbed()
-            .setColor('#eb8334')
+            .setColor(colors.Orange)
             .setThumbnail(toKick.user.displayAvatarURL)
             .setFooter(message.member.displayName)
             .setTimestamp()

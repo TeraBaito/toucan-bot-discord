@@ -1,21 +1,25 @@
-const Discord = require('discord.js');
-const ms = require('ms');
+const Discord = require('discord.js'),
+    ms = require('ms'),
+    { logs } = require('../../config.json'),
+    colors = require('../../colors.json'),
+    { getMember } = require('../../handlers/functions');
+
 
 module.exports = {
     name: 'tempmute',
     helpName: 'Temporary Mute',
     category: 'Moderation',
     aliases: ['tm'],
-    // cooldown: ,
     usage: 'tempmute [user] [time {s, m, h, d}] (reason)',
     description: 'Mutes a user from the guild temporarily, for a specified amount of time (seconds, minutes, hours, days)',
 
     run: async(bot, message, args) => {
-        const logChannel = message.guild.channels.cache.find(c => c.name === 'toucan-logs') || message.channel;
-        const toTempmute = message.mentions.members.first() || message.guild.members.cache.get(args[0]);
+        const logChannel = message.guild.channels.cache.get(logs) || message.channel;
+        const toTempmute = await getMember(message, args[0]);
         const muterole = message.guild.roles.cache.find(r => r.name === 'Muted');
         let mutetime = args[1];
         let reason = args[2] ? args.slice(2).join(' ') : 'No reason specified';
+
 
         // No muterole, creates a muterole :)
         if(!muterole) {
@@ -79,7 +83,7 @@ module.exports = {
         }
 
         const mEmbed = new Discord.MessageEmbed()
-            .setColor('#eb8334')
+            .setColor(colors.Orange)
             .setThumbnail(toTempmute.user.displayAvatarURL)
             .setFooter(message.member.displayName)
             .setTimestamp()
@@ -89,9 +93,8 @@ module.exports = {
             .addField('Mute time', ms(ms(mutetime)))
             .addField('Reason', reason);
 
-
         const umEmbed = new Discord.MessageEmbed()
-            .setColor('#eb8334')
+            .setColor(colors.ForestGreen)
             .setThumbnail(toTempmute.user.displayAvatarURL)
             .setFooter(message.member.displayName)
             .setTimestamp()

@@ -1,126 +1,90 @@
-// For Hosting in VPS
-const express = require('express');
-const app = express();
-const port = 3000;
-
-app.get('/', (req, res) => res.send('Working'));
-app.listen(port, () => console.log(`Toucan listening at http://localhost:${port}`));
-
-// modules
+// Modules
 const Discord = require('discord.js');
-// const { config } = require('dotenv');
-const bot = new Discord.Client(); 
+// const { Player } = require('discord-player');
+const { token } = require('./config.json');
 const fs = require('fs');
-const { isNullOrUndefined } = require('util');
+const chalk = require('chalk');
 
-let i = 0;
+// Client
+const bot = new Discord.Client();
 
+// Other bot properties
 bot.commands = new Discord.Collection();
 bot.aliases = new Discord.Collection();
 bot.categories = fs.readdirSync('./commands/');
+bot.cooldowns = new Discord.Collection();
 
+// Debugging
+//bot.on('debug', m => console.log(`[${chalk.cyan('debug')}] - ${m}`));
+bot.on('warn', w => console.warn(`${chalk.yellow('[Warn]')} - ${w}`));
+bot.on('error', e => console.error(`${chalk.redBright('[Error]')} - ${e.stack}`));
+process.on('uncaughtException', e => console.error(`${chalk.redBright('[Error]')} - ${e.stack}`));
+process.on('unhandledRejection', e => console.error(`${chalk.redBright('[Error]')} - ${e.stack}`));
+process.on('warning', e => console.warn(`${chalk.yellow('[Error]')} - ${e.stack}`));
 
-const cooldowns = new Discord.Collection();
+// Music Chunk
+/*
+const player = new Player(bot);
+bot.player = player;
 
+bot.player
+// Send a message when a track starts
+    .on('trackStart', (message, track) => message.channel.send(`Now playing ${track.title}...`))
+ 
+// Send a message when something is added to the queue
+    .on('trackAdd', (message, track) => message.channel.send(`${track.title} has been added to the queue!`))
+    .on('playlistAdd', (message, playlist) => message.channel.send(`${playlist.title} has been added to the queue (${playlist.items.length} songs)!`))
+ 
+// Send messages to format search results
+    .on('searchResults', (message, query, tracks) => {
+ 
+        const embed = new Discord.MessageEmbed()
+            .setAuthor(`Here are your search results for ${query}!`)
+            .setDescription(tracks.map((t, i) => `${i + 1}. ${t.title}`))
+            .setFooter('Send the number of the song you want to play!');
+        message.channel.send(embed);
+    })
 
-// handler folder 
-['command'].forEach(handler => {
+    .on('searchInvalidResponse', (message, query, tracks, content, collector) => message.channel.send(`You must send a valid number between 1 and ${tracks.length}!`))
+    .on('searchCancel', (message, query, tracks) => message.channel.send('You did not provide a valid response... Please send the command again!'))
+    .on('noResults', (message, query) => message.channel.send(`No results found on YouTube for ${query}!`))
+ 
+    // Send a message when the music is stopped
+    .on('queueEnd', (message, queue) => message.channel.send('Music stopped as there is no more music in the queue!'))
+    .on('channelEmpty', (message, queue) => message.channel.send('Music stopped as there is no more member in the voice channel!'))
+    .on('botDisconnect', (message, queue) => message.channel.send('Music stopped as I have been disconnected from the channel!'))
+
+    // Error handling
+    .on('error', (error, message) => {
+        switch(error.name){
+        case 'NotPlaying':
+            message.channel.send('There is no music being played on this server!');
+            break;
+        case 'NotConnected':
+            message.channel.send('You are not connected in any voice channel!');
+            break;
+        case 'UnableToJoin':
+            message.channel.send('I am not able to join your voice channel, please check my permissions!');
+            break;
+        default:
+            message.channel.send(`Something went wrong... Error: ${error}`);
+        }
+    });
+*/
+
+// Handlers' modules
+['command', 'event'].forEach(handler => {
     require(`./handlers/${handler}`)(bot);
 });
 
-// env
-/*
-config ({
-    path: `${__dirname}/.env`
-});
-*/
+// Connect to VPS
+// const express = require('express');
+// const app = express();
+// const port = 3000;
 
-bot.login(process.env.TOKEN);
-// let ver = process.env.NODE_ENV;
-
-// turn on bot
-bot.on('ready', () => {
-    // if (ver === 'prod') {
-    bot.user.setActivity(`out for commands in ${bot.guilds.cache.size} servers`, {type: 'WATCHING'});
-    // } else if (ver === 'dev') {
-    //     bot.user.setActivity('my owner code terribly', {type: 'WATCHING'});
-    // }
-    console.log(`${bot.user.username} online in ${bot.guilds.cache.size} servers`);
-});
+// app.get('/', (req, res) => res.send('Working'));
+// app.listen(port, () => console.log(`Ari Bot listening at http://localhost:${port}`));
 
 
-// core
-bot.on('message', async message => {
-
-
-    // Prefix
-    let prefixes = JSON.parse(fs.readFileSync('./handlers/prefixes.json', 'utf-8'));
-    if (!prefixes[message.guild.id]) {
-        prefixes[message.guild.id] = {
-            prefixes: process.env.PREFIX
-        };
-    };
-
-    let prefix = prefixes[message.guild.id].prefixes;
-
-    // Show prefix when mentioned
-    const mentionRegex = new RegExp(`^<@!?${bot.user.id}>`);
-    if (message.content.match(mentionRegex)) {
-        return message.channel.send(`My prefix is \`${prefix}\``);
-    }
-
-    const args = message.content.slice(prefix.length).trim().split(/ +/g);
-    const cmd = args.shift().toLowerCase();
-
-       
-    /* ";config prefix ?" in which:
-    ; = prefix
-    config = cmd
-    prefix,? = args (args[0],args[1])  */
-
-    // command reading
-    if (message.author.bot) return;
-    if (!message.guild) return;
-    if (!message.content.startsWith(prefix)) return;
-    if (!message.member) message.member = await message.guild.fetchMember(message);
-    if (cmd.length === 0) return;    
-
- 
-    
-  
-
-    // command handler
-    let command = bot.commands.get(cmd);
-    if(!command) command = bot.commands.get(bot.aliases.get(cmd));
-
-
-
-    // cooldowns (default is 3s)
-    try {
-        if (!cooldowns.has(command.name)) {
-            cooldowns.set(command.name, new Discord.Collection());
-        }
-    } catch (e) {
-        if (e instanceof TypeError) {
-            return;
-        } else {
-            return console.error(e);
-        }
-    }
-    
-    const now = Date.now();
-    const timestamps = cooldowns.get(command.name);
-    const cooldownAmount = (command.cooldown ? command.cooldown : 3) * 1000;
-    const expirationTime = timestamps.get(message.author.id) + cooldownAmount;
-    
-    if (timestamps.has(message.author.id)) {
-        if (now < expirationTime) {
-            const timeLeft = (expirationTime - now) / 1000;
-            return message.channel.send(`It's cool you're trying to do stuff but could you chill a bit for ${timeLeft.toFixed(1)} seconds?`);
-        }
-    } else {
-        if(command) command.run(bot, message, args);
-        timestamps.set(message.author.id, now);
-        setTimeout(() => timestamps.delete(message.author.id), cooldownAmount);
-    }
-});
+// Login and turn on
+bot.login(token);

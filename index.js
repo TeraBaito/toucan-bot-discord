@@ -78,12 +78,12 @@ bot.player
 });
 
 // Connect to VPS
-// const express = require('express');
-// const app = express();
-// const port = 3000;
+const express = require('express');
+const app = express();
+const port = 3000;
 
-// app.get('/', (req, res) => res.send('Working'));
-// app.listen(port, () => console.log(`Ari Bot listening at http://localhost:${port}`));
+app.get('/', (req, res) => res.send('Working'));
+app.listen(port, () => console.log(`Ari Bot listening at http://localhost:${port}`));
 
 
 // Login and turn on

@@ -15,3 +15,6 @@ template.txt
 
 # Prefixes JSON file (has server IDs)
 handlers/prefixes.json
+
+# Linter
+.eslintrc.json

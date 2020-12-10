@@ -7,11 +7,12 @@
 # Archived commands I don't want to commit
 /archived-commands/
 
-# Token and config vars
-.env
+# Token and other config vars
+config.json
 
-# Self-aids
-template.txt
+# VS Code
+.vscode/*
+template.config.js
 
 # Prefixes JSON file (has server IDs)
 handlers/prefixes.json
@@ -22,3 +23,9 @@ handlers/prefixes.json
 # temp
 Dockerfile
 .cpanel.yml
+
+# Sensitive language
+handlers/blacklisted-words.json
+
+# Self-aids
+template.txt

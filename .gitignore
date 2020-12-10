@@ -1,11 +1,11 @@
 # Use `npm install` to install all modules
-node_modules/*
+/node_modules/
 
 # Code editor stuffs
-.vscode/*
+/.vscode/
 
 # Archived commands I don't want to commit
-archived-commands/*
+/archived-commands/
 
 # Token and config vars
 .env
@@ -15,3 +15,10 @@ template.txt
 
 # Prefixes JSON file (has server IDs)
 handlers/prefixes.json
+
+# Legacy
+/legacy/
+
+# temp
+Dockerfile
+.cpanel.yml

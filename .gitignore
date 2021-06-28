@@ -1,31 +1,36 @@
-# Use `npm install` to install all modules
+# Use `npm install` to install all required modules 
 /node_modules/
 
-# Code editor stuffs
-/.vscode/
-
-# Archived commands I don't want to commit
+# Legacy stuff
+/legacy/
 /archived-commands/
 
-# Token and other config vars
-config.json
+# Linter
+.eslintrc.json
+
+# Token and other secrets
+.env
 
 # VS Code
-.vscode/*
-template.config.js
-
-# Prefixes JSON file (has server IDs)
-handlers/prefixes.json
-
-# Legacy
-/legacy/
-
-# temp
-Dockerfile
-.cpanel.yml
+/.vscode/
 
 # Sensitive language
-handlers/blacklisted-words.json
+src/handlers/blacklisted-words.json
+
+# Changing config that shouldn't really be pushed
+botSettings.json
 
 # Self-aids
 template.txt
+template.config.js
+
+# Hosting files
+.replit
+.cpanel.yml
+Dockerfile
+
+# Databases
+/db/
+
+# Everything testing
+*test*
